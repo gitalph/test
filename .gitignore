@@ -13,6 +13,7 @@ dist
 logs
 *.log
 logs/*
+coverage
 
 # Dependency directories
 jspm_packages/

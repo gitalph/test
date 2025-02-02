@@ -1,10 +1,10 @@
 import { ProductServiceClient } from '../../../generated/proto/product'
-import { buy } from './BuyController'
+import { buy, BuyBody } from './BuyController'
 import { FastifyRequest, FastifyReply } from 'fastify'
 
 describe('buy controller', () => {
     let mockProductClient: Partial<ProductServiceClient>
-    let mockRequest: Partial<FastifyRequest<{ Body: { marketHashName: string } }>>
+    let mockRequest: Partial<FastifyRequest<{ Body: BuyBody }>>
     let mockReply: Partial<FastifyReply>
 
     beforeEach(() => {
@@ -18,7 +18,7 @@ describe('buy controller', () => {
         // Setting a valid user in request
         mockRequest = {
             user: { id: 1 },
-            query: { marketHashName: 'testItem' }
+            body: { code: 'testItem' }
         }
     })
 
@@ -29,7 +29,7 @@ describe('buy controller', () => {
             callback(null, { updatedBalance })
         })
 
-        await expect(buy(mockRequest as FastifyRequest<{ Body: { marketHashName: string } }>, mockReply as FastifyReply, mockProductClient as ProductServiceClient)).resolves.toBeUndefined()
+        await expect(buy(mockRequest as FastifyRequest<{ Body: BuyBody }>, mockReply as FastifyReply, mockProductClient as ProductServiceClient)).resolves.toBeUndefined()
 
         expect(mockProductClient.purchaseItem).toHaveBeenCalledWith(
             { userId: 1, marketHashName: 'testItem' },
@@ -38,10 +38,10 @@ describe('buy controller', () => {
         expect(mockReply.send).toHaveBeenCalledWith({ updatedBalance })
     })
 
-    it('should return validation error when marketHashName is missing', async () => {
-        // simulate missing marketHashName in query
-        mockRequest.query = {}
-        await buy(mockRequest as FastifyRequest<{ Body: { marketHashName: string } }>, mockReply as FastifyReply, mockProductClient as ProductServiceClient)
+    it('should return validation error when code is missing', async () => {
+        // simulate missing code
+        mockRequest.body = { code: '' }
+        await buy(mockRequest as FastifyRequest<{ Body: BuyBody }>, mockReply as FastifyReply, mockProductClient as ProductServiceClient)
 
         expect(mockReply.code).toHaveBeenCalledWith(400)
         expect(mockReply.send).toHaveBeenCalledWith(expect.objectContaining({
@@ -55,13 +55,13 @@ describe('buy controller', () => {
             callback(testError)
         })
 
-        await expect(buy(mockRequest as FastifyRequest<{ Body: { marketHashName: string } }>, mockReply as FastifyReply, mockProductClient as ProductServiceClient))
+        await expect(buy(mockRequest as FastifyRequest<{ Body: BuyBody }>, mockReply as FastifyReply, mockProductClient as ProductServiceClient))
             .rejects.toEqual(testError)
     })
 
     it('should handle missing user in request', async () => {
         mockRequest.user = undefined
-        await buy(mockRequest as FastifyRequest<{ Body: { marketHashName: string } }>, mockReply as FastifyReply, mockProductClient as ProductServiceClient)
+        await buy(mockRequest as FastifyRequest<{ Body: BuyBody }>, mockReply as FastifyReply, mockProductClient as ProductServiceClient)
 
         expect(mockReply.code).toHaveBeenCalledWith(401)
     })
