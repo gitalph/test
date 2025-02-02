@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package product;
+
+import "repository.proto";
+
+service ProductService {
+  rpc GetItems (GetItemsRequest) returns (GetItemsResponse);
+  // aliases repository's purchase RPC
+  rpc PurchaseItem (repository.MakePurchaseRequest) returns (repository.MakePurchaseResponse);
+}
+
+message GetItemsRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+}
+
+message GetItemsResponse {
+  repeated repository.Item items = 1;
+  int32 total = 2;
+}
+
