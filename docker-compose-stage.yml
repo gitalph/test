@@ -1,0 +1,70 @@
+services:
+  auth-service:
+    build: .
+    env_file: stage.env
+    command: node dist/auth-service/server.js
+    networks:
+      - backend
+
+  product-service:
+    build: .
+    env_file: stage.env
+    command: node dist/product-service/server.js
+    networks:
+      - backend
+
+  repository-service:
+    build: .
+    env_file: stage.env
+    command: node dist/repository-service/server.js
+    networks:
+      - backend
+
+  frontend-api-service1:
+    build: .
+    env_file: stage.env
+    command: node dist/frontend-api-service/server.js
+    ports:
+      - "3000:3000"
+    networks:
+      - backend
+
+  frontend-api-service2:
+    build: .
+    env_file: stage.env
+    command: node dist/frontend-api-service/server.js
+    ports:
+      - "3001:3000"
+    networks:
+      - backend
+
+  collect-items-service:
+    build: .
+    env_file: stage.env
+    command: node dist/collect-items-service/server.js
+    networks:
+      - backend
+
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: youruser
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_DB: yourdb
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  redis:
+    image: redis:7
+    networks:
+      - backend
+
+volumes:
+  db-data:
+
+
+networks:
+  backend:
+    driver: bridge
