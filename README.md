@@ -1,19 +1,19 @@
 # test
 
 +-------------------+
-|     Frontend      |
+|     Frontend      | on prod only
 +---------+---------+
           |
           | HTTP Requests
           |
 +---------v----------+
-|   Nginx (Load      |
+|   Nginx (Load      | on prod only
 |    Balancer)       |
 +----+---------+-----+
      |         |
      |         |
 +----v-----+ +--v------+
-| Frontend | | Frontend|
+| Frontend | | Frontend| on prod only
 |  API #1  | |  API #x |
 +----+-----+ +---+-----+
      |           |
@@ -52,10 +52,14 @@
 
 Follow these steps:
 
-1. Rename the environment file: run `mv example.env .env`
-2. Run `npm install`
-3. Run `npm run generate-proto`
-4. Run `npm run test:coverage`
-5. Run `docker compose up -d`
-6. Run `npm run start:local`
+1. Run `sudo apt update`
+2. Run `sudo apt install -y protobuf-compiler`
+
+3. Rename the environment file: run `mv example.env .env`
+
+4. Run `npm install`
+5. Run `npm run generate-proto`
+6. Run `npm run test:coverage`
+7. Run `docker compose up -d`
+8. Run `npm run start:local`
 
