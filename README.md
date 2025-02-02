@@ -66,3 +66,5 @@ Follow these steps:
 8. Run `npm run start:local`
 
 9. Open and check `http://localhost:3000/docs`
+
+## or try here - https://datalounatest.chernov.us/docs
