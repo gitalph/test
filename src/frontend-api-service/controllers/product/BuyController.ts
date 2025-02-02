@@ -1,3 +1,4 @@
+import { status } from '@grpc/grpc-js'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import Joi from 'joi'
 import { ProductServiceClient } from '../../../generated/proto/product.js'
@@ -34,6 +35,11 @@ export const buy = async (
 
     productClient.purchaseItem({ userId: user.id, marketHashName: value.code }, (err, response) => {
         if (err) {
+            if (err.code === status.RESOURCE_EXHAUSTED) {
+
+                reply.code(409).send(err)
+                return resolve()
+            }
             return reject(err)
         }
 

@@ -59,6 +59,18 @@ describe('buy controller', () => {
             .rejects.toEqual(testError)
     })
 
+    it('should handle RESOURCE_EXHAUSTED error', async () => {
+        const testError = { code: 8 }; // status.RESOURCE_EXHAUSTED = 8
+        (mockProductClient.purchaseItem as jest.Mock).mockImplementation((req, callback) => {
+            callback(testError)
+        })
+
+        await buy(mockRequest as FastifyRequest<{ Body: BuyBody }>, mockReply as FastifyReply, mockProductClient as ProductServiceClient)
+
+        expect(mockReply.code).toHaveBeenCalledWith(409)
+        expect(mockReply.send).toHaveBeenCalledWith(testError)
+    })
+
     it('should handle missing user in request', async () => {
         mockRequest.user = undefined
         await buy(mockRequest as FastifyRequest<{ Body: BuyBody }>, mockReply as FastifyReply, mockProductClient as ProductServiceClient)
