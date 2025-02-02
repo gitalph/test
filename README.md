@@ -63,3 +63,4 @@ Follow these steps:
 7. Run `docker compose up -d`
 8. Run `npm run start:local`
 
+9. Open and check `http://localhost:3000/docs`
