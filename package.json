@@ -7,7 +7,7 @@
         "build": "tsc",
         "test": "jest --runInBand --no-cache",
         "test:watch": "jest --watch",
-        "test:coverage": "jest --coverage",
+        "test:coverage": "jest --coverage --color",
         "start:auth": "node dist/auth-service/server.js",
         "start:product": "node dist/product-service/server.js",
         "start:repository": "node dist/repository-service/server.js",
