@@ -67,4 +67,8 @@ Follow these steps:
 
 9. Open and check `http://localhost:3000/docs`
 
+## Super Fast Start
+ 1. Run `docker compose -f docker-compose-stage.yml up`
+ 2. Open and check `http://localhost:3000/docs`
+
 ## or try here - https://datalounatest.chernov.us/docs
